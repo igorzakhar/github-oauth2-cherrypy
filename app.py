@@ -1,7 +1,12 @@
 import os
+import pathlib
 
 import cherrypy
+from jinja2 import Environment, FileSystemLoader
 from requests_oauthlib import OAuth2Session
+
+
+env = Environment(loader=FileSystemLoader('templates'))
 
 
 class GithubOAuthApp:
@@ -48,7 +53,13 @@ class GithubOAuthApp:
         if user_data.json().get('message') == 'Requires authentication':
             raise cherrypy.HTTPRedirect('/')
 
-        return user_data
+        tmpl = env.get_template('index.html')
+        avatar_url = user_data.json().get('avatar_url')
+        login = user_data.json().get('login')
+        return tmpl.render(
+            avatar_url=avatar_url,
+            login=login
+        )
 
 
 if __name__ == '__main__':
@@ -62,6 +73,17 @@ if __name__ == '__main__':
                 'token_url': 'https://github.com/login/oauth/access_token',
                 'client_id': os.environ.get('OAUTH_CLIENT_ID'),
                 'client_secret': os.environ.get('OAUTH_CLIENT_SECRET')
+            },
+        '/':
+            {
+                'tools.staticdir.root': str(
+                    pathlib.Path(__file__).absolute().parent
+                )
+            },
+        '/static':
+            {
+                'tools.staticdir.on': True,
+                'tools.staticdir.dir': 'static'
             }
     }
 
