@@ -1,0 +1,17 @@
+
+/* Profile container */
+.profile {
+  margin: 20px 0;
+}
+
+/* Profile Content */
+.profile-content {
+  padding: 20px;
+  background: #fff;
+  min-height: 460px;
+}
+
+.badge-secondary {
+    color: #586069;
+    background-color: rgba(27,31,35,.08);
+}
