@@ -28,7 +28,7 @@
             <h5>Repositories <span class="badge badge-secondary badge-pill">{{ repos_count }}</span></h5> 
             <hr>
             {% for repo in repos_list %}
-              <a href="{{ repo.get('repos_url') }}"><h5>{{ repo.get('name') }}</h5></a>
+              <a href="{{ repo.get('html_url') }}"><h5>{{ repo.get('name') }}</h5></a>
               <hr>
             {% endfor %}
           </div>
