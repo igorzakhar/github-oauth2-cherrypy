@@ -49,16 +49,23 @@ class GithubOAuthApp:
             cherrypy.config['client_id'],
             token=cherrypy.session.get('oauth_token')
         )
-        user_data = github.get('https://api.github.com/user')
-        if user_data.json().get('message') == 'Requires authentication':
-            raise cherrypy.HTTPRedirect('/')
+        profile_data = github.get(
+            'https://api.github.com/users/igorzakhar'
+        )
+
+        repos_data = github.get(profile_data.json().get('repos_url'))
+
+        avatar_url = profile_data.json().get('avatar_url')
+        login = profile_data.json().get('login')
+        repos_count = profile_data.json().get('public_repos')
 
         tmpl = env.get_template('index.html')
-        avatar_url = user_data.json().get('avatar_url')
-        login = user_data.json().get('login')
+
         return tmpl.render(
             avatar_url=avatar_url,
-            login=login
+            login=login,
+            repos_count=repos_count,
+            repos_list=repos_data.json()
         )
 
 
