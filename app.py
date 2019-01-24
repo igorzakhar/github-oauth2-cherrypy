@@ -1,5 +1,6 @@
 import os
 import pathlib
+from urllib.parse import urlparse
 
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
@@ -41,7 +42,8 @@ class GithubOAuthApp:
         raise cherrypy.HTTPRedirect('/profile')
 
     @cherrypy.expose
-    def profile(self):
+    def profile(self, page=''):
+
         if cherrypy.session.get('oauth_token') is None:
             raise cherrypy.HTTPRedirect('/')
 
@@ -53,7 +55,20 @@ class GithubOAuthApp:
             'https://api.github.com/users/igorzakhar'
         )
 
-        repos_data = github.get(profile_data.json().get('repos_url'))
+        repos_url = profile_data.json().get('repos_url')
+        request_url = '{}?page={}'.format(repos_url, page)
+
+        repos_data = github.get(request_url)
+
+        prev_link = repos_data.links.get('prev')
+        prev_url_query = None
+        if prev_link is not None:
+            prev_url_query = urlparse(prev_link.get('url')).query
+
+        next_link = repos_data.links.get('next')
+        next_url_query = None
+        if next_link is not None:
+            next_url_query = urlparse(next_link.get('url')).query
 
         avatar_url = profile_data.json().get('avatar_url')
         login = profile_data.json().get('login')
@@ -65,7 +80,9 @@ class GithubOAuthApp:
             avatar_url=avatar_url,
             login=login,
             repos_count=repos_count,
-            repos_list=repos_data.json()
+            repos_list=repos_data.json(),
+            prev_url_query=prev_url_query,
+            next_url_query=next_url_query
         )
 
 
