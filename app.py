@@ -51,8 +51,9 @@ class GithubOAuthApp:
             cherrypy.config['client_id'],
             token=cherrypy.session.get('oauth_token')
         )
+
         profile_data = github.get(
-            'https://api.github.com/users/igorzakhar'
+            'https://api.github.com/user'
         )
 
         repos_url = profile_data.json().get('repos_url')
