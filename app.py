@@ -77,13 +77,22 @@ class GithubOAuthApp:
 
         tmpl = env.get_template('index.html')
 
+        source_path = urlparse(
+            'https://github.com/igorzakhar/github-oauth2-cherrypy'
+        )
+        author, repo_name = list(filter(bool, source_path.path.split('/')))
+
         return tmpl.render(
             avatar_url=avatar_url,
             login=login,
             repos_count=repos_count,
             repos_list=repos_data.json(),
             prev_url_query=prev_url_query,
-            next_url_query=next_url_query
+            next_url_query=next_url_query,
+            author_name=author,
+            repo_name=repo_name,
+            author_profile=cherrypy.config['author_profile'],
+            source_code=cherrypy.config['source_code']
         )
 
 
@@ -97,7 +106,9 @@ if __name__ == '__main__':
                 'auth_base_url': 'https://github.com/login/oauth/authorize',
                 'token_url': 'https://github.com/login/oauth/access_token',
                 'client_id': os.environ.get('OAUTH_CLIENT_ID'),
-                'client_secret': os.environ.get('OAUTH_CLIENT_SECRET')
+                'client_secret': os.environ.get('OAUTH_CLIENT_SECRET'),
+                'author_profile': 'https://github.com/igorzakhar',
+                'source_code': 'https://github.com/igorzakhar/github-oauth2-cherrypy'
             },
         '/':
             {

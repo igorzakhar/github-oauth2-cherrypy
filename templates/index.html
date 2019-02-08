@@ -34,34 +34,42 @@
           </div>
           <div>
             <ul class="pagination justify-content-center">
-            {% if prev_url_query is none and next_url_query is not none %}  
-              <li class="page-item disabled">
-                <span class="page-link">Previous</span>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="?{{ next_url_query }}">Next</a>
-              </li>
-            {% elif prev_url_query is not none and next_url_query is none %}
-              <li class="page-item">
-                <a class="page-link" href="?{{ prev_url_query }}">Previous</a>
-              </li>
-              <li class="page-item disabled">
-                <span class="page-link">Next</span>
-              </li>
-            {% else %}
-               <li class="page-item">
-                <a class="page-link" href="?{{ prev_url_query }}">Previous</a>
-              </li>
-              <li class="page-item">
-                <a class="page-link" href="?{{ next_url_query }}">Next</a>
-              </li>
-            {% endif %}
-
-
+              {% if prev_url_query is none and next_url_query is not none %}
+                <li class="page-item disabled">
+                  <span class="page-link">Previous</span>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?{{ next_url_query }}">Next</a>
+                </li>
+                {% elif prev_url_query is not none and next_url_query is none %}
+                <li class="page-item">
+                  <a class="page-link" href="?{{ prev_url_query }}">Previous</a>
+                </li>
+                <li class="page-item disabled">
+                  <span class="page-link">Next</span>
+                </li>
+              {% else %}
+                <li class="page-item">
+                  <a class="page-link" href="?{{ prev_url_query }}">Previous</a>
+                </li>
+                <li class="page-item">
+                  <a class="page-link" href="?{{ next_url_query }}">Next</a>
+                </li>
+              {% endif %}
             </ul>
           </div>
         </div>
       </div>
     </div>
+    <footer class="footer">
+      <div class="container text-center">
+        <span class="text-muted">
+          Created by <a href="{{ author_profile }}">{{ author_name }}</a>,
+        </span>
+        <span class="text-muted">
+          source code: <a href="{{ source_code }}">{{ repo_name }}</a>
+        </span>
+      </div>
+    </footer>
   </body>
 </html>
