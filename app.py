@@ -1,11 +1,12 @@
 import os
-import pathlib
 from urllib.parse import urlparse
 
 import cherrypy
 from jinja2 import Environment, FileSystemLoader
 from requests_oauthlib import OAuth2Session
 
+
+APP_CONF = os.path.join(os.path.dirname(__file__), "app.conf")
 
 env = Environment(loader=FileSystemLoader('templates'))
 
@@ -98,29 +99,4 @@ class GithubOAuthApp:
 
 if __name__ == '__main__':
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = "1"
-    config = {
-        'global':
-            {
-                'server.socket_port': 5000,
-                'tools.sessions.on': True,
-                'auth_base_url': 'https://github.com/login/oauth/authorize',
-                'token_url': 'https://github.com/login/oauth/access_token',
-                'client_id': os.environ.get('OAUTH_CLIENT_ID'),
-                'client_secret': os.environ.get('OAUTH_CLIENT_SECRET'),
-                'author_profile': 'https://github.com/igorzakhar',
-                'source_code': 'https://github.com/igorzakhar/github-oauth2-cherrypy'
-            },
-        '/':
-            {
-                'tools.staticdir.root': str(
-                    pathlib.Path(__file__).absolute().parent
-                )
-            },
-        '/static':
-            {
-                'tools.staticdir.on': True,
-                'tools.staticdir.dir': 'static'
-            }
-    }
-
-    cherrypy.quickstart(GithubOAuthApp(), config=config)
+    cherrypy.quickstart(GithubOAuthApp(), config=APP_CONF)
