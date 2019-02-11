@@ -9,6 +9,9 @@
 2. Вы входите в наш сервис с учетной записью Github;
 3. Сервис показывает список всех ваших репозиториев, ваш аватар и имя пользователя.
 
+## Демо
+[http://github-repos-browser.herokuapp.com/](http://github-repos-browser.herokuapp.com/)
+
 ## Установка
 Для использования модуля потртребуется предустановленный Python 3.5 (на других версиях не проверялся).  
 Рекомендуется устанавливать зависимости в виртуальном окружении, используя [virtualenv](https://github.com/pypa/virtualenv), [virtualenvwrapper](https://pypi.python.org/pypi/virtualenvwrapper) или [venv](https://docs.python.org/3/library/venv.html).  
