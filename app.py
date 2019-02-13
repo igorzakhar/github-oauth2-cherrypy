@@ -97,6 +97,12 @@ class GithubOAuthApp:
         )
 
 
-if __name__ == '__main__':
+def run():
     os.environ['OAUTHLIB_INSECURE_TRANSPORT'] = "1"
     cherrypy.quickstart(GithubOAuthApp(), config=APP_CONF)
+
+
+if __name__ == '__main__':
+    if os.environ.get('APP_DEVELOPMENT') is None:
+        cherrypy.config.update({'server.socket_host': '0.0.0.0'})
+    run()
